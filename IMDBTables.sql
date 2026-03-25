@@ -1,5 +1,10 @@
 -- TODO: put tables in the right order to avoid FK conflicts
 -- DROP TABLES
+DROP TABLE IF EXISTS award_nomination;
+DROP TABLE IF EXISTS domestic_box_office;
+DROP TABLE IF EXISTS episode;
+DROP TABLE IF EXISTS movie;
+
 DROP TABLE IF EXISTS participation;
 DROP TABLE IF EXISTS person_profession;
 DROP TABLE IF EXISTS media_production;
@@ -7,13 +12,18 @@ DROP TABLE IF EXISTS country_of_production;
 DROP TABLE IF EXISTS review;
 DROP TABLE IF EXISTS media_content_warning;
 DROP TABLE IF EXISTS media_genre;
+
+DROP TABLE IF EXISTS series;
 DROP TABLE IF EXISTS production_company;
+DROP TABLE IF EXISTS character;
 DROP TABLE IF EXISTS person;
-DROP TABLE IF EXISTS media;
+
 DROP TABLE IF EXISTS profession;
+DROP TABLE IF EXISTS award;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS content_warning;
 DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS media;
 DROP TABLE IF EXISTS language;
 DROP TABLE IF EXISTS country;
 
@@ -109,7 +119,7 @@ FOREIGN KEY character_id REFERENCES character (id)
 
 CREATE TABLE person
 (
-person_id INT PRIMARY KEY,
+id INT PRIMARY KEY,
 name VARCHAR(64),
 birth_year YEAR,
 death_year YEAR,
@@ -164,3 +174,63 @@ PRIMARY KEY(media_id, company_id),
 FOREIGN KEY media_id REFERENCES media (id),
 FOREIGN KEY company_id REFERENCES production_company (id)
 ) ENGINE = InnoDB;
+
+-- Nayla
+CREATE TABLE character (
+id INT PRIMARY KEY,
+name VARCHAR (64)
+) engine=InnoDB;
+
+CREATE TABLE award_nomination (
+id INT PRIMARY KEY,
+award_id INT,
+media_id INT,
+person_id INT,
+year YEAR,
+category VARCHAR(64),
+is_winner VARCHAR(64),
+FOREIGN KEY (award_id) REFERENCES award(id),
+FOREIGN KEY (media_id) REFERENCES media(id),
+FOREIGN KEY (person_id) REFERENCES person(id)
+) engine=InnoDB;
+
+CREATE TABLE award (
+id INT PRIMARY KEY,
+name VARCHAR(64)
+) engine=InnoDB;
+
+CREATE TABLE movie (
+media_id INT PRIMARY KEY, 
+Release_year YEAR,
+Duration_minutes INT,
+FOREIGN KEY (media_id) REFERENCES media(id)
+) engine=InnoDB;
+
+CREATE TABLE domestic_box_office (
+media_id INT,
+record_date DATE,
+day_amount INT,
+theatre_count INT,
+FOREIGN KEY (media_id) REFERENCES media(id),
+PRIMARY KEY (media_id, record_date)
+) engine=InnoDB;
+
+CREATE TABLE episode (
+media_id INT PRIMARY KEY,
+series_media_id INT,
+season_number INT,
+episode_number INT,
+duration_minutes INT,
+release_date DATE,
+FOREIGN KEY (media_id) REFERENCES media(id),
+FOREIGN KEY (series_media_id) REFERENCES series(media_id)
+) engine=InnoDB;
+
+CREATE TABLE series (
+media_id INT PRIMARY KEY,
+intended_season_count INT,
+content_format VARCHAR(64),
+start_year YEAR,
+end_year YEAR,
+FOREIGN KEY (media_id) REFERENCES media(id)
+) engine=InnoDB;
