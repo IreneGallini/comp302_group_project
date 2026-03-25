@@ -166,8 +166,8 @@ media_id INT,
 company_id INT,
 role VARCHAR(64),
 PRIMARY KEY(media_id, company_id),
-FOREIGN KEY media_id REFERENCES media (id),
-FOREIGN KEY company_id REFERENCES production_company (id)
+CONSTRAINT fk_media_prod_media FOREIGN KEY (media_id) REFERENCES media(id),
+CONSTRAINT fk_media_prod_company FOREIGN KEY (company_id) REFERENCES production_company(id)
 ) ENGINE = InnoDB;
 
 -- DOMESTIC_BOX_OFFICE (depends on MEDIA)
@@ -200,8 +200,8 @@ CREATE TABLE person_profession
 person_id INT,
 profession_id INT,
 PRIMARY KEY(person_id, profession_id),
-FOREIGN KEY person_id REFERENCES person (id),
-FOREIGN KEY profession_id REFERENCES profession (id)
+CONSTRAINT fk_person_prof FOREIGN KEY (person_id) REFERENCES person(id),
+CONSTRAINT fk_prof_prof FOREIGN KEY (profession_id) REFERENCES profession(id)
 ) ENGINE = InnoDB;
 
 -- PARTICIPATION (depends on PERSON, MEDIA, PROFESSION, CHARACTERS)
@@ -212,10 +212,10 @@ media_id INT,
 person_id INT,
 profession_id INT,
 character_id INT,
-FOREIGN KEY person_id REFERENCES person (id),
-FOREIGN KEY media_id REFERENCES media (id),
-FOREIGN KEY profession_id REFERENCES profession (id),
-FOREIGN KEY character_id REFERENCES characters (id)
+CONSTRAINT fk_part_person FOREIGN KEY (person_id) REFERENCES person(id),
+CONSTRAINT fk_part_media FOREIGN KEY (media_id) REFERENCES media(id),
+CONSTRAINT fk_part_prof FOREIGN KEY (profession_id) REFERENCES profession(id),
+CONSTRAINT fk_part_char FOREIGN KEY (character_id) REFERENCES characters(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE country_of_production
