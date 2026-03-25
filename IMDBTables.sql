@@ -223,8 +223,8 @@ CREATE TABLE country_of_production
 country_id INT,
 media_id INT,
 PRIMARY KEY (media_id, country_id),
-FOREIGN KEY media_id REFERENCES media (id),
-FOREIGN KEY country_id REFERENCES country (id)
+CONSTRAINT fk_cop_media FOREIGN KEY (media_id) REFERENCES media(id),
+CONSTRAINT fk_cop_country FOREIGN KEY (country_id) REFERENCES country(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE episode (
