@@ -28,33 +28,52 @@ DROP TABLE IF EXISTS language;
 DROP TABLE IF EXISTS country;
 
 -- CREATE TABLES
---IRENE
--- LANGUAGE TABLE
+
+-- LOOKUP TABLES
 CREATE TABLE language (
     id AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 ) ENGINE=InnoDB;
 
--- GENRE TABLE
 CREATE TABLE genre (
     id AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 ) ENGINE=InnoDB;
 
--- CONTENT WARNING TABLE
 CREATE TABLE content_warning (
     id AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(100) NOT NULL UNIQUE
 ) ENGINE=InnoDB;
 
--- USER TABLE
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     join_date DATE NOT NULL DEFAULT CURRENT_DATE
 ) ENGINE=InnoDB;
 
--- MEDIA TABLE
+CREATE TABLE country
+(
+id INT PRIMARY KEY,
+name VARCHAR(64)
+) ENGINE = InnoDB;
+
+CREATE TABLE profession
+(
+id INT PRIMARY KEY,
+name VARCHAR(64)
+) ENGINE = InnoDB;
+
+CREATE TABLE award (
+id INT PRIMARY KEY,
+name VARCHAR(64)
+) engine=InnoDB;
+
+CREATE TABLE character (
+id INT PRIMARY KEY,
+name VARCHAR (64)
+) engine=InnoDB;
+
+-- MEDIA TABLE (depends on LANGUAGE)
 CREATE TABLE media (
     id AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -66,7 +85,45 @@ CREATE TABLE media (
     FOREIGN KEY (language_id) REFERENCES language(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- MEDIA_GENRE (MANY-TO-MANY)
+-- PERSON (depends on COUNTRY)
+CREATE TABLE person
+(
+id INT PRIMARY KEY,
+name VARCHAR(64),
+birth_year YEAR,
+death_year YEAR,
+nationality_id INT,
+FOREIGN KEY nationality_id REFERENCES country (id)
+) ENGINE = InnoDB;
+
+-- PRODUCTION_COMPANY (depends on COUNTRY)
+CREATE TABLE production_company
+(
+id INT PRIMARY KEY,
+name VARCHAR(64),
+hq_country_id INT,
+FOREIGN KEY hq_country_id REFERENCES country (id)
+) ENGINE = InnoDB;
+
+-- MOVIE (depends on MEDIA)
+CREATE TABLE movie (
+media_id INT PRIMARY KEY, 
+Release_year YEAR,
+Duration_minutes INT,
+FOREIGN KEY (media_id) REFERENCES media(id)
+) engine=InnoDB;
+
+-- SERIES (depends on MEDIA)
+CREATE TABLE series (
+media_id INT PRIMARY KEY,
+intended_season_count INT,
+content_format VARCHAR(64),
+start_year YEAR,
+end_year YEAR,
+FOREIGN KEY (media_id) REFERENCES media(id)
+) engine=InnoDB;
+
+
 CREATE TABLE media_genre (
     media_id INT NOT NULL,
     genre_id INT NOT NULL,
@@ -102,7 +159,7 @@ CREATE TABLE review (
     UNIQUE (media_id, user_id) -- one review per user per media
 ) ENGINE=InnoDB;
 
--- SAM
+
 CREATE TABLE participation
 (
 participation_id INT PRIMARY KEY,
@@ -117,16 +174,6 @@ FOREIGN KEY character_id REFERENCES character (id)
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE person
-(
-id INT PRIMARY KEY,
-name VARCHAR(64),
-birth_year YEAR,
-death_year YEAR,
-nationality_id INT,
-FOREIGN KEY nationality_id REFERENCES country (id)
-) ENGINE = InnoDB;
-
 CREATE TABLE person_profession
 (
 person_id INT,
@@ -136,11 +183,7 @@ FOREIGN KEY person_id REFERENCES person (id),
 FOREIGN KEY profession_id REFERENCES profession (id)
 ) ENGINE = InnoDB;
 
-CREATE TABLE profession
-(
-id INT PRIMARY KEY,
-name VARCHAR(64)
-) ENGINE = InnoDB;
+
 
 CREATE TABLE country_of_production
 (
@@ -151,19 +194,6 @@ FOREIGN KEY media_id REFERENCES media (id),
 FOREIGN KEY country_id REFERENCES country (id)
 ) ENGINE = InnoDB;
 
-CREATE TABLE country
-(
-id INT PRIMARY KEY,
-name VARCHAR(64)
-) ENGINE = InnoDB;
-
-CREATE TABLE production_company
-(
-id INT PRIMARY KEY,
-name VARCHAR(64),
-hq_country_id INT,
-FOREIGN KEY hq_country_id REFERENCES country (id)
-) ENGINE = InnoDB;
 
 CREATE TABLE media_production
 (
@@ -175,11 +205,6 @@ FOREIGN KEY media_id REFERENCES media (id),
 FOREIGN KEY company_id REFERENCES production_company (id)
 ) ENGINE = InnoDB;
 
--- Nayla
-CREATE TABLE character (
-id INT PRIMARY KEY,
-name VARCHAR (64)
-) engine=InnoDB;
 
 CREATE TABLE award_nomination (
 id INT PRIMARY KEY,
@@ -194,17 +219,7 @@ FOREIGN KEY (media_id) REFERENCES media(id),
 FOREIGN KEY (person_id) REFERENCES person(id)
 ) engine=InnoDB;
 
-CREATE TABLE award (
-id INT PRIMARY KEY,
-name VARCHAR(64)
-) engine=InnoDB;
 
-CREATE TABLE movie (
-media_id INT PRIMARY KEY, 
-Release_year YEAR,
-Duration_minutes INT,
-FOREIGN KEY (media_id) REFERENCES media(id)
-) engine=InnoDB;
 
 CREATE TABLE domestic_box_office (
 media_id INT,
@@ -226,11 +241,4 @@ FOREIGN KEY (media_id) REFERENCES media(id),
 FOREIGN KEY (series_media_id) REFERENCES series(media_id)
 ) engine=InnoDB;
 
-CREATE TABLE series (
-media_id INT PRIMARY KEY,
-intended_season_count INT,
-content_format VARCHAR(64),
-start_year YEAR,
-end_year YEAR,
-FOREIGN KEY (media_id) REFERENCES media(id)
-) engine=InnoDB;
+
