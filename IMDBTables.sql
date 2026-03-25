@@ -218,18 +218,6 @@ FOREIGN KEY profession_id REFERENCES profession (id),
 FOREIGN KEY character_id REFERENCES characters (id)
 ) ENGINE = InnoDB;
 
-
-CREATE TABLE person_profession
-(
-person_id INT,
-profession_id INT,
-PRIMARY KEY(person_id, profession_id),
-FOREIGN KEY person_id REFERENCES person (id),
-FOREIGN KEY profession_id REFERENCES profession (id)
-) ENGINE = InnoDB;
-
-
-
 CREATE TABLE country_of_production
 (
 country_id INT,
@@ -238,42 +226,6 @@ PRIMARY KEY (media_id, country_id),
 FOREIGN KEY media_id REFERENCES media (id),
 FOREIGN KEY country_id REFERENCES country (id)
 ) ENGINE = InnoDB;
-
-
-CREATE TABLE media_production
-(
-media_id INT,
-company_id INT,
-role VARCHAR(64),
-PRIMARY KEY(media_id, company_id),
-FOREIGN KEY media_id REFERENCES media (id),
-FOREIGN KEY company_id REFERENCES production_company (id)
-) ENGINE = InnoDB;
-
-
-CREATE TABLE award_nomination (
-id INT PRIMARY KEY,
-award_id INT,
-media_id INT,
-person_id INT,
-year YEAR,
-category VARCHAR(64),
-is_winner VARCHAR(64),
-FOREIGN KEY (award_id) REFERENCES award(id),
-FOREIGN KEY (media_id) REFERENCES media(id),
-FOREIGN KEY (person_id) REFERENCES person(id)
-) engine=InnoDB;
-
-
-
-CREATE TABLE domestic_box_office (
-media_id INT,
-record_date DATE,
-day_amount INT,
-theatre_count INT,
-FOREIGN KEY (media_id) REFERENCES media(id),
-PRIMARY KEY (media_id, record_date)
-) engine=InnoDB;
 
 CREATE TABLE episode (
 media_id INT PRIMARY KEY,
