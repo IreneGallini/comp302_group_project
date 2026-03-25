@@ -123,7 +123,7 @@ end_year YEAR,
 FOREIGN KEY (media_id) REFERENCES media(id)
 ) engine=InnoDB;
 
-
+-- MEDIA_GENRE (depends on MEDIA and GENRE)
 CREATE TABLE media_genre (
     media_id INT NOT NULL,
     genre_id INT NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE media_genre (
     FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- MEDIA_CONTENT_WARNING (MANY-TO-MANY)
+-- MEDIA_CONTENT_WARNING (depends on MEDIA and CONTENT_WARNING)
 CREATE TABLE media_content_warning (
     media_id INT NOT NULL,
     warning_id INT NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE media_content_warning (
     FOREIGN KEY (warning_id) REFERENCES content_warning(id) ON DELETE CASCADE
 ) ENGINE=InnoDB; 
 
--- REVIEW TABLE
+-- REVIEW (depends on MEDIA and USERS)
 CREATE TABLE review (
     id AUTO_INCREMENT PRIMARY KEY,
     media_id INT NOT NULL,
@@ -159,32 +159,7 @@ CREATE TABLE review (
     UNIQUE (media_id, user_id) -- one review per user per media
 ) ENGINE=InnoDB;
 
-
-CREATE TABLE participation
-(
-participation_id INT PRIMARY KEY,
-media_id INT,
-person_id INT,
-profession_id INT,
-character_id INT,
-FOREIGN KEY person_id REFERENCES person (id),
-FOREIGN KEY media_id REFERENCES media (id),
-FOREIGN KEY profession_id REFERENCES profession (id),
-FOREIGN KEY character_id REFERENCES character (id)
-) ENGINE = InnoDB;
-
-
-CREATE TABLE person_profession
-(
-person_id INT,
-profession_id INT,
-PRIMARY KEY(person_id, profession_id),
-FOREIGN KEY person_id REFERENCES person (id),
-FOREIGN KEY profession_id REFERENCES profession (id)
-) ENGINE = InnoDB;
-
-
-
+-- COUNTRY_OF_PRODUCTION (depends on MEDIA and COUNTRY)
 CREATE TABLE country_of_production
 (
 country_id INT,
@@ -194,7 +169,7 @@ FOREIGN KEY media_id REFERENCES media (id),
 FOREIGN KEY country_id REFERENCES country (id)
 ) ENGINE = InnoDB;
 
-
+-- MEDIA_PRODUCTION (depends on MEDIA and PRODUCTION_COMPANY)
 CREATE TABLE media_production
 (
 media_id INT,
@@ -205,7 +180,17 @@ FOREIGN KEY media_id REFERENCES media (id),
 FOREIGN KEY company_id REFERENCES production_company (id)
 ) ENGINE = InnoDB;
 
+-- DOMESTIC_BOX_OFFICE (depends on MEDIA)
+CREATE TABLE domestic_box_office (
+media_id INT,
+record_date DATE,
+day_amount INT,
+theatre_count INT,
+FOREIGN KEY (media_id) REFERENCES media(id),
+PRIMARY KEY (media_id, record_date)
+) engine=InnoDB;
 
+-- AWARD_NOMINATION (depends on MEDIA, AWARD, and PERSON)
 CREATE TABLE award_nomination (
 id INT PRIMARY KEY,
 award_id INT,
@@ -219,17 +204,31 @@ FOREIGN KEY (media_id) REFERENCES media(id),
 FOREIGN KEY (person_id) REFERENCES person(id)
 ) engine=InnoDB;
 
+-- PERSON_PROFESSION (depends on PERSON, PROFESSION)
+CREATE TABLE person_profession
+(
+person_id INT,
+profession_id INT,
+PRIMARY KEY(person_id, profession_id),
+FOREIGN KEY person_id REFERENCES person (id),
+FOREIGN KEY profession_id REFERENCES profession (id)
+) ENGINE = InnoDB;
 
-
-CREATE TABLE domestic_box_office (
+-- PARTICIPATION (depends on PERSON, MEDIA, PROFESSION, CHARACTER)
+CREATE TABLE participation
+(
+participation_id INT PRIMARY KEY,
 media_id INT,
-record_date DATE,
-day_amount INT,
-theatre_count INT,
-FOREIGN KEY (media_id) REFERENCES media(id),
-PRIMARY KEY (media_id, record_date)
-) engine=InnoDB;
+person_id INT,
+profession_id INT,
+character_id INT,
+FOREIGN KEY person_id REFERENCES person (id),
+FOREIGN KEY media_id REFERENCES media (id),
+FOREIGN KEY profession_id REFERENCES profession (id),
+FOREIGN KEY character_id REFERENCES character (id)
+) ENGINE = InnoDB;
 
+-- EPISODE (depends on SERIES, MEDIA)
 CREATE TABLE episode (
 media_id INT PRIMARY KEY,
 series_media_id INT,
