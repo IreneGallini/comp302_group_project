@@ -101,7 +101,7 @@ CREATE TABLE production_company
 id INT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(64),
 hq_country_id INT,
-FOREIGN KEY hq_country_id REFERENCES country (id)
+CONSTRAINT fk_hq_country FOREIGN KEY (hq_country_id) REFERENCES country(id)
 ) ENGINE = InnoDB;
 
 -- MOVIE (depends on MEDIA)
