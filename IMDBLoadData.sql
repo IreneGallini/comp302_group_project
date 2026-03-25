@@ -1,0 +1,1 @@
+-- Intert data into IMDB tables created in IMDBTables.sql
