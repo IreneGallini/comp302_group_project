@@ -1,0 +1,16 @@
+media_id,title,original_title,type,budget,revenue,content_warning,language_id
+1,The Shawshank Redemption,The Shawshank Redemption,movie,"25,000,000","73,300,000","suicide, violence, sexual assualt",1
+2,The Godfather,The Godfather,movie,6000000,245000000,"organized crime violence, murder",1
+3,The Dark Knight,The Dark Knight,movie,185000000,1006000000,"violence, terrorism",1
+4,Pulp Fiction,Pulp Fiction,movie,8000000,213900000,"drug use, violence, sexual content",1
+5,Forrest Gump,Forrest Gump,movie,55000000,678200000,"war violence, drug use",1
+6,Inception,Inception,movie,160000000,836800000,violence,1
+7,Fight Club,Fight Club,movie,63000000,101200000,"violence, suicide themes",1
+9,Titanic,Titanic,movie,200000000,2264000000,"disaster scenes, nudity",1
+10,Interstellar,Interstellar,movie,165000000,701800000,intense scenes,1
+11,Parasite,기생충,movie,11000000,263100000,"violence, mature themes",2
+12,Spirited Away,千と千尋の神隠し,movie,19000000,395800000,fantasy peril,3
+13,Toy Story,Toy Story,movie,30000000,394400000,mild peril,1
+14,La La Land,La La Land,movie,30000000,446100000,mild language,1
+15,The Revenant,The Revenant,movie,135000000,533000000,graphic violence,1
+16,Grey's Anatomy,Complications,series,,,"violence, sex",1
